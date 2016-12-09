@@ -19,18 +19,18 @@ namespace XMedius.SendSecure
         private static readonly string USER_TOKEN_PATH = "api/user_token";
 
         private string EnterpriseAccount;
-        private string Token;
+        private string ApiToken;
         private Uri EndPoint;
         private JsonClient JsonClient;
         private string Locale;
 
-        public Client(string token, Uri endpoint, string enterpriseAccount, string locale = "en")
+        public Client(string apiToken, string enterpriseAccount, Uri endpoint, string locale = "en")
         {
             EnterpriseAccount = enterpriseAccount;
-            Token = token;
+            ApiToken = apiToken;
             EndPoint = endpoint;
             Locale = locale;
-            JsonClient = new JsonClient(Token, EnterpriseAccount, EndPoint);
+            JsonClient = new JsonClient(ApiToken, EnterpriseAccount, EndPoint);
         }
 
         public static async Task<string> GetUserToken(string enterpriseAccount, string username, string password, string deviceId, 
