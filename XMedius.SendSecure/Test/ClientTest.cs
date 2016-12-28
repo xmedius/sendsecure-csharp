@@ -69,24 +69,24 @@ namespace XMedius.SendSecure.Test
         }
 
         [TestMethod]
-        public async Task GetUserTokenTest_Success()
+        public async Task GetUserTokenAsyncTest_Success()
         {
             Utils.HttpUtil.HttpClient = new HttpClient(mockHandler.Object);
 
-            string token = await Client.GetUserToken("testsuccess", "testuser", "testpass", "test", "test");
+            string token = await Client.GetUserTokenAsync("testsuccess", "testuser", "testpass", "test", "test");
 
             Assert.AreEqual(TOKEN, token);
         }
 
         [TestMethod]
         [ExpectedException(typeof(Exceptions.SendSecureException))]
-        public async Task GetUserTokenTest_UrlNotFound()
+        public async Task GetUserTokenAsyncTest_UrlNotFound()
         {
             Utils.HttpUtil.HttpClient = new HttpClient(mockHandler.Object);
 
             try
             {
-                string token = await Client.GetUserToken("testnotfound", "testuser", "testpass", "test", "test");
+                string token = await Client.GetUserTokenAsync("testnotfound", "testuser", "testpass", "test", "test");
             }
             catch (Exceptions.SendSecureException e)
             {
@@ -97,13 +97,13 @@ namespace XMedius.SendSecure.Test
 
         [TestMethod]
         [ExpectedException(typeof(Exceptions.SendSecureException))]
-        public async Task GetUserTokenTest_UserTokenNotFound()
+        public async Task GetUserTokenAsyncTest_UserTokenNotFound()
         {
             Utils.HttpUtil.HttpClient = new HttpClient(mockHandler.Object);
 
             try
             {
-                string token = await Client.GetUserToken("testurisuccess", "testuser", "testpass", "test", "test");
+                string token = await Client.GetUserTokenAsync("testurisuccess", "testuser", "testpass", "test", "test");
             }
             catch (Exceptions.SendSecureException e)
             {
@@ -114,13 +114,13 @@ namespace XMedius.SendSecure.Test
 
         [TestMethod]
         [ExpectedException(typeof(Exceptions.SendSecureException))]
-        public async Task GetUserTokenTest_DefaultUserTokenWrongCredentials()
+        public async Task GetUserTokenAsyncTest_DefaultUserTokenWrongCredentials()
         {
             Utils.HttpUtil.HttpClient = new HttpClient(mockHandler.Object);
 
             try
             {
-                string token = await Client.GetUserToken("testsuccess", "wronguser", "testpass", "test", "test");
+                string token = await Client.GetUserTokenAsync("testsuccess", "wronguser", "testpass", "test", "test");
             }
             catch (Exceptions.SendSecureException e)
             {

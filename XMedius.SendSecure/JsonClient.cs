@@ -42,21 +42,21 @@ namespace XMedius.SendSecure
             Locale = locale;
         }
 
-        public async Task<string> NewSafebox(string userEmail, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<string> NewSafeboxAsync(string userEmail, CancellationToken cancellationToken = default(CancellationToken))
         {
-            Uri resourceAddress = new Uri(await GetSendSecureEndpoint(cancellationToken), String.Format(NEW_SAFEBOX_PATH, userEmail, Locale));
+            Uri resourceAddress = new Uri(await GetSendSecureEndpointAsync(cancellationToken), String.Format(NEW_SAFEBOX_PATH, userEmail, Locale));
 
-            return await Utils.HttpUtil.MakeAuthenticatedGetRequest(resourceAddress, Token, cancellationToken);
+            return await Utils.HttpUtil.MakeAuthenticatedGetRequestAsync(resourceAddress, Token, cancellationToken);
         }
 
-        public async Task<string> UploadFile(Uri uploadUrl, string filePath, string contentType, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<string> UploadFileAsync(Uri uploadUrl, string filePath, string contentType, CancellationToken cancellationToken = default(CancellationToken))
         {
             var fileInfo = new FileInfo(filePath);
             Stream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-            return await UploadFile(uploadUrl, fileStream, contentType, fileInfo.Name, fileInfo.Length, cancellationToken);
+            return await UploadFileAsync(uploadUrl, fileStream, contentType, fileInfo.Name, fileInfo.Length, cancellationToken);
         }
 
-        public async Task<string> UploadFile(Uri uploadUrl, Stream fileStream, string contentType, string fileName, long fileSize, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<string> UploadFileAsync(Uri uploadUrl, Stream fileStream, string contentType, string fileName, long fileSize, CancellationToken cancellationToken = default(CancellationToken))
         {
             try
             {
@@ -80,7 +80,7 @@ namespace XMedius.SendSecure
 
                 requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                string responseString = await Utils.HttpUtil.MakeRequest(requestMessage, cancellationToken);
+                string responseString = await Utils.HttpUtil.MakeRequestAsync(requestMessage, cancellationToken);
 
                 return responseString;
             }
@@ -114,11 +114,11 @@ namespace XMedius.SendSecure
             }
         }
 
-        public async Task<string> CommitSafebox(string jsonParameters, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<string> CommitSafeboxAsync(string jsonParameters, CancellationToken cancellationToken = default(CancellationToken))
         {
             try
             {
-                Uri resourceAddress = new Uri(await GetSendSecureEndpoint(cancellationToken), String.Format(COMMIT_SAFEBOX_PATH, Locale));
+                Uri resourceAddress = new Uri(await GetSendSecureEndpointAsync(cancellationToken), String.Format(COMMIT_SAFEBOX_PATH, Locale));
 
                 StringContent jsonContent = new StringContent(jsonParameters);
                 jsonContent.Headers.ContentType = new MediaTypeWithQualityHeaderValue("application/json");
@@ -133,7 +133,7 @@ namespace XMedius.SendSecure
                 requestMessage.Headers.Add("XM-Token-Authorization", Token);
                 requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                return await Utils.HttpUtil.MakeRequest(requestMessage, cancellationToken);
+                return await Utils.HttpUtil.MakeRequestAsync(requestMessage, cancellationToken);
             }
             catch (Exceptions.MakeRequestException e)
             {
@@ -165,25 +165,25 @@ namespace XMedius.SendSecure
             }
         }
 
-        public async Task<string> GetSecurityProfiles(string userEmail, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<string> GetSecurityProfilesAsync(string userEmail, CancellationToken cancellationToken = default(CancellationToken))
         {
-            Uri resourceAddress = new Uri(await GetSendSecureEndpoint(cancellationToken), String.Format(SECURITY_PROFILES_PATH, EnterpriseAccount, userEmail, Locale));
+            Uri resourceAddress = new Uri(await GetSendSecureEndpointAsync(cancellationToken), String.Format(SECURITY_PROFILES_PATH, EnterpriseAccount, userEmail, Locale));
 
-            return await Utils.HttpUtil.MakeAuthenticatedGetRequest(resourceAddress, Token, cancellationToken);
+            return await Utils.HttpUtil.MakeAuthenticatedGetRequestAsync(resourceAddress, Token, cancellationToken);
         }
 
-        public async Task<string> GetEnterpriseSettings(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<string> GetEnterpriseSettingsAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            Uri resourceAddress = new Uri(await GetSendSecureEndpoint(cancellationToken), String.Format(ENTERPRISE_SETTINGS_PATH, EnterpriseAccount, Locale));
+            Uri resourceAddress = new Uri(await GetSendSecureEndpointAsync(cancellationToken), String.Format(ENTERPRISE_SETTINGS_PATH, EnterpriseAccount, Locale));
 
-            return await Utils.HttpUtil.MakeAuthenticatedGetRequest(resourceAddress, Token, cancellationToken);
+            return await Utils.HttpUtil.MakeAuthenticatedGetRequestAsync(resourceAddress, Token, cancellationToken);
         }
 
-        private async Task<Uri> GetSendSecureEndpoint(CancellationToken cancellationToken)
+        private async Task<Uri> GetSendSecureEndpointAsync(CancellationToken cancellationToken)
         {
             if (SendSecureUrl == null)
             {
-                SendSecureUrl = new Uri(await Utils.SendSecureUrlUtil.GetSendSecureUrlForEnterpriseAccount(EnterpriseAccount, Endpoint, default(CancellationToken)));
+                SendSecureUrl = new Uri(await Utils.SendSecureUrlUtil.GetSendSecureUrlForEnterpriseAccountAsync(EnterpriseAccount, Endpoint, default(CancellationToken)));
             }
 
             return SendSecureUrl;

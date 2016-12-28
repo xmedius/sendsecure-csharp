@@ -65,7 +65,7 @@ namespace SendSecureClient
         {
             try
             {
-                string token = GetUserToken().Result;
+                string token = GetUserTokenAsync().Result;
             }
             catch (XMedius.SendSecure.Exceptions.SendSecureException e)
             {
@@ -79,7 +79,7 @@ namespace SendSecureClient
 
         public static async Task<string> GetUserToken()
         {
-            string token = await XMedius.SendSecure.Client.GetUserToken("deathstar", "darthvader", "d@Rk$1De", "DV-TIE/x1", "TIE Advanced x1", "The Force App", new Uri("https://portal.xmedius.com"));
+            string token = await XMedius.SendSecure.Client.GetUserTokenAsync("deathstar", "darthvader", "d@Rk$1De", "DV-TIE/x1", "TIE Advanced x1", "The Force App", new Uri("https://portal.xmedius.com"));
 
             Console.WriteLine(token);
             return token;
@@ -112,7 +112,7 @@ namespace SendSecureClient
             {
                 string token = "USER|1d495165-4953-4457-8b5b-4fcf801e621a";
 
-                string previewUrl = SubmitSafebox(token).GetAwaiter().GetResult();
+                string previewUrl = SubmitSafeboxAsync(token).GetAwaiter().GetResult();
             }
             catch (XMedius.SendSecure.Exceptions.SendSecureException e)
             {
@@ -124,7 +124,7 @@ namespace SendSecureClient
             }
         }
 
-        public static async Task<string> SubmitSafebox(string token)
+        public static async Task<string> SubmitSafeboxAsync(string token)
         {
             var safebox2 = new XMedius.SendSecure.Helpers.Safebox("darthvader@empire.com");
             safebox2.Subject = "Family matters";
@@ -138,7 +138,7 @@ namespace SendSecureClient
             safebox2.Recipients.Add(recipient);
 
             XMedius.SendSecure.Client client = new Client(token, "deathstar", new Uri("https://portal.xmedius.com"));
-            XMedius.SendSecure.Helpers.SafeboxResponse safeboxResponse = await client.SubmitSafebox(safebox2);
+            XMedius.SendSecure.Helpers.SafeboxResponse safeboxResponse = await client.SubmitSafeboxAsync(safebox2);
 
             Console.WriteLine(safeboxResponse.PreviewUrl);
             return safeboxResponse.PreviewUrl;
