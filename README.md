@@ -154,7 +154,7 @@ namespace SendSecureClient
 
 ### Get User Token
 ```
-GetUserToken(enterpriseAccount, username, password, deviceId, deviceName, applicationType, endpoint, oneTimePassword, cancellationToken)
+GetUserTokenAsync(enterpriseAccount, username, password, deviceId, deviceName, applicationType, endpoint, oneTimePassword, cancellationToken)
 ```
 Creates and returns an API Token for a specific user within a SendSecure enterprise account.
 Calling this method again with the exact same params will always return the same Token.
@@ -185,7 +185,7 @@ locale            | String | The locale in which the server errors will be retur
 
 ### Get Enterprise Settings
 ```
-EnterpriseSettings(cancellationToken)
+EnterpriseSettingsAsync(cancellationToken)
 ```
 Returns all values/properties of the enterprise account's settings specific to SendSecure.
 
@@ -195,7 +195,7 @@ cancellationToken | CancellationToken | A cancellation token that can be used by
 
 ### Get Default Security Profile
 ```
-DefaultSecurityProfile(userEmail, cancellationToken)
+DefaultSecurityProfileAsync(userEmail, cancellationToken)
 ```
 Returns the default security profile (if it has been set) for a specific user, with all its setting values/properties.
 
@@ -206,7 +206,7 @@ cancellationToken | CancellationToken | A cancellation token that can be used by
 
 ### Get Security Profiles
 ```
-SecurityProfiles(userEmail, cancellationToken)
+SecurityProfilesAsync(userEmail, cancellationToken)
 ```
 Returns the list of all security profiles available to a specific user, with all their setting values/properties.
 
@@ -217,7 +217,7 @@ cancellationToken | CancellationToken | A cancellation token that can be used by
 
 ### Initialize SafeBox
 ```
-InitializeSafebox(safebox, cancellationToken)
+InitializeSafeboxAsync(safebox, cancellationToken)
 ```
 Pre-creates a SafeBox on the SendSecure system and returns the updated Safebox object with the necessary system parameters filled out (GUID, public encryption key, upload URL).
 
@@ -228,7 +228,7 @@ cancellationToken | CancellationToken | A cancellation token that can be used by
 
 ### Upload Attachment
 ```
-UploadAttachment(safebox, attachment, cancellationToken)
+UploadAttachmentAsync(safebox, attachment, cancellationToken)
 ```
 Uploads the specified file as an Attachment of the specified SafeBox and returns the updated Attachment object with the GUID parameter filled out.
 
@@ -240,7 +240,7 @@ cancellationToken | CancellationToken | A cancellation token that can be used by
 
 ### Commit SafeBox
 ```
-CommitSafebox(safebox, cancellationToken)
+CommitSafeboxAsync(safebox, cancellationToken)
 ```
 Finalizes the creation (commit) of the SafeBox on the SendSecure system.
 This actually "Sends" the SafeBox with all content and contact info previously specified.
@@ -252,7 +252,7 @@ cancellationToken | CancellationToken | A cancellation token that can be used by
 
 ### Submit SafeBox
 ```
-SubmitSafebox(safebox, cancellationToken)
+SubmitSafeboxAsync(safebox, cancellationToken)
 ```
 This method is a high-level combo that initializes the SafeBox, uploads all attachments and commits the SafeBox.
 
