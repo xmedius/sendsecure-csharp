@@ -65,7 +65,7 @@ namespace SendSecureClient
         {
             try
             {
-                string token = GetUserTokenAsync().Result;
+                string token = GetUserTokenAsync().GetAwaiter().GetResult();
             }
             catch (XMedius.SendSecure.Exceptions.SendSecureException e)
             {
@@ -77,7 +77,7 @@ namespace SendSecureClient
             }
         }
 
-        public static async Task<string> GetUserToken()
+        public static async Task<string> GetUserTokenAsync()
         {
             string token = await XMedius.SendSecure.Client.GetUserTokenAsync("deathstar", "darthvader", "d@Rk$1De", "DV-TIE/x1", "TIE Advanced x1", "The Force App", new Uri("https://portal.xmedius.com"));
 
