@@ -15,7 +15,7 @@ namespace XMedius.SendSecure.Utils
         internal static HttpClient HttpClient = new HttpClient();
         private static TraceSource TraceSource = new TraceSource("XMedius.SendSecure");
 
-        public static async Task<String> MakeRequest(HttpRequestMessage requestMessage, CancellationToken cancellationToken)
+        public static async Task<String> MakeRequestAsync(HttpRequestMessage requestMessage, CancellationToken cancellationToken)
         {
             try
             {
@@ -66,7 +66,7 @@ namespace XMedius.SendSecure.Utils
             }
         }
 
-        public static async Task<string> MakeAuthenticatedGetRequest(Uri requestUri, string token, CancellationToken cancellationToken)
+        public static async Task<string> MakeAuthenticatedGetRequestAsync(Uri requestUri, string token, CancellationToken cancellationToken)
         {
             try
             {
@@ -74,7 +74,7 @@ namespace XMedius.SendSecure.Utils
                 request.Headers.Add("XM-Token-Authorization", token);
                 request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                string responseString = await MakeRequest(request, cancellationToken);
+                string responseString = await MakeRequestAsync(request, cancellationToken);
 
                 return responseString;
             }

@@ -18,7 +18,7 @@ namespace XMedius.SendSecure.Utils
 
         private static TraceSource TraceSource = new TraceSource("XMedius.SendSecure");
 
-        internal static async Task<string> GetPortalUrlForEnterpriseAccount(string enterpriseAccount, Uri portalUrl, CancellationToken cancellationToken)
+        internal static async Task<string> GetPortalUrlForEnterpriseAccountAsync(string enterpriseAccount, Uri portalUrl, CancellationToken cancellationToken)
         {
             Uri resourceAddress = new Uri(portalUrl, String.Format(PORTAL_HOST_PATH, enterpriseAccount));
 
@@ -30,12 +30,12 @@ namespace XMedius.SendSecure.Utils
 
             requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("text/plain"));
 
-            string responseString = await HttpUtil.MakeRequest(requestMessage, cancellationToken);
+            string responseString = await HttpUtil.MakeRequestAsync(requestMessage, cancellationToken);
 
             return responseString;
         }
 
-        internal static async Task<string> GetSendSecureUrlForEnterpriseAccount(string enterpriseAccount, Uri portalUrl, CancellationToken cancellationToken)
+        internal static async Task<string> GetSendSecureUrlForEnterpriseAccountAsync(string enterpriseAccount, Uri portalUrl, CancellationToken cancellationToken)
         {
             try
             {
@@ -49,7 +49,7 @@ namespace XMedius.SendSecure.Utils
 
                 requestMessage.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("text/plain"));
 
-                string responseString = await HttpUtil.MakeRequest(requestMessage, cancellationToken);
+                string responseString = await HttpUtil.MakeRequestAsync(requestMessage, cancellationToken);
 
                 return responseString;
             }

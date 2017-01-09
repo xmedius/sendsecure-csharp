@@ -33,7 +33,7 @@ namespace XMedius.SendSecure
             JsonClient = new JsonClient(ApiToken, EnterpriseAccount, EndPoint);
         }
 
-        public static async Task<string> GetUserToken(string enterpriseAccount, string username, string password, string deviceId, 
+        public static async Task<string> GetUserTokenAsync(string enterpriseAccount, string username, string password, string deviceId, 
             string deviceName, string applicationType = "SendSecure C#", Uri endpoint = null, string oneTimePassword = "", 
             CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -44,7 +44,7 @@ namespace XMedius.SendSecure
 
             try
             {
-                string portalUrl = await Utils.SendSecureUrlUtil.GetPortalUrlForEnterpriseAccount(enterpriseAccount, endpoint, cancellationToken);
+                string portalUrl = await Utils.SendSecureUrlUtil.GetPortalUrlForEnterpriseAccountAsync(enterpriseAccount, endpoint, cancellationToken);
 
                 Uri resourceAddress = new Uri(new Uri(portalUrl), USER_TOKEN_PATH);
 
@@ -64,7 +64,7 @@ namespace XMedius.SendSecure
                 request.Content = jsonContent;
                 request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                string responseString = await Utils.HttpUtil.MakeRequest(request, cancellationToken);
+                string responseString = await Utils.HttpUtil.MakeRequestAsync(request, cancellationToken);
 
                 var ResponseData = JsonConvert.DeserializeObject<JsonObjects.GetTokenResponseSuccess>(responseString);
 
@@ -111,18 +111,18 @@ namespace XMedius.SendSecure
             }
         }
 
-        public async Task<Helpers.SafeboxResponse> SubmitSafebox(Helpers.Safebox safebox, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<Helpers.SafeboxResponse> SubmitSafeboxAsync(Helpers.Safebox safebox, CancellationToken cancellationToken = default(CancellationToken))
         {
-            await InitializeSafebox(safebox, cancellationToken);
+            await InitializeSafeboxAsync(safebox, cancellationToken);
 
             foreach(Helpers.Attachment attachment in safebox.Attachments)
             {
-                await UploadAttachment(safebox, attachment, cancellationToken);
+                await UploadAttachmentAsync(safebox, attachment, cancellationToken);
             }
 
             if(safebox.SecurityProfile == null)
             {
-                safebox.SecurityProfile = await DefaultSecurityProfile(safebox.UserEmail, cancellationToken);
+                safebox.SecurityProfile = await DefaultSecurityProfileAsync(safebox.UserEmail, cancellationToken);
 
                 if(safebox.SecurityProfile == null)
                 {
@@ -130,12 +130,12 @@ namespace XMedius.SendSecure
                 }
             }
 
-            return await CommitSafebox(safebox, cancellationToken);
+            return await CommitSafeboxAsync(safebox, cancellationToken);
         }
 
-        public async Task<Helpers.Safebox> InitializeSafebox(Helpers.Safebox safebox, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<Helpers.Safebox> InitializeSafeboxAsync(Helpers.Safebox safebox, CancellationToken cancellationToken = default(CancellationToken))
         {
-            string jsonResponse = await JsonClient.NewSafebox(safebox.UserEmail, cancellationToken);
+            string jsonResponse = await JsonClient.NewSafeboxAsync(safebox.UserEmail, cancellationToken);
 
             var response = JsonConvert.DeserializeObject<JsonObjects.NewSafeboxResponseSuccess>(jsonResponse);
 
@@ -146,9 +146,9 @@ namespace XMedius.SendSecure
             return safebox;
         }
 
-        public async Task<Helpers.Attachment> UploadAttachment(Helpers.Safebox safebox, Helpers.Attachment attachment, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<Helpers.Attachment> UploadAttachmentAsync(Helpers.Safebox safebox, Helpers.Attachment attachment, CancellationToken cancellationToken = default(CancellationToken))
         {
-            string jsonResponse = await JsonClient.UploadFile(new Uri(safebox.UploadUrl), attachment.Stream, attachment.ContentType, attachment.FileName, attachment.Size, cancellationToken);
+            string jsonResponse = await JsonClient.UploadFileAsync(new Uri(safebox.UploadUrl), attachment.Stream, attachment.ContentType, attachment.FileName, attachment.Size, cancellationToken);
 
             var response = JsonConvert.DeserializeObject<JsonObjects.UploadFileResponseSuccess>(jsonResponse);
 
@@ -157,7 +157,7 @@ namespace XMedius.SendSecure
             return attachment;
         }
 
-        public async Task<Helpers.SafeboxResponse> CommitSafebox(Helpers.Safebox safebox, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<Helpers.SafeboxResponse> CommitSafeboxAsync(Helpers.Safebox safebox, CancellationToken cancellationToken = default(CancellationToken))
         {
             var request = new JsonObjects.CommitSafeboxRequest
             {
@@ -192,32 +192,32 @@ namespace XMedius.SendSecure
 
             string json = JsonConvert.SerializeObject(request);
 
-            string jsonResponse = await JsonClient.CommitSafebox(json, cancellationToken);
+            string jsonResponse = await JsonClient.CommitSafeboxAsync(json, cancellationToken);
 
             return JsonConvert.DeserializeObject<Helpers.SafeboxResponse>(jsonResponse);
         }
 
-        public async Task<List<Helpers.SecurityProfile>> SecurityProfiles(string userEmail, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<List<Helpers.SecurityProfile>> SecurityProfilesAsync(string userEmail, CancellationToken cancellationToken = default(CancellationToken))
         {
-            string jsonResponse = await JsonClient.GetSecurityProfiles(userEmail, cancellationToken);
+            string jsonResponse = await JsonClient.GetSecurityProfilesAsync(userEmail, cancellationToken);
 
             var response = JsonConvert.DeserializeObject<JsonObjects.GetSecurityProfilesResponseSuccess>(jsonResponse);
 
             return response.SecurityProfiles;
         }
 
-        public async Task<Helpers.SecurityProfile> DefaultSecurityProfile(string userEmail, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<Helpers.SecurityProfile> DefaultSecurityProfileAsync(string userEmail, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var enterpriseSettings = await EnterpriseSettings(cancellationToken);
-            var securityProfiles = await SecurityProfiles(userEmail, cancellationToken);
+            var enterpriseSettings = await EnterpriseSettingsAsync(cancellationToken);
+            var securityProfiles = await SecurityProfilesAsync(userEmail, cancellationToken);
 
             return securityProfiles.Find(x => x.Id == enterpriseSettings.DefaultSecurityProfileId);
         }
 
 
-        public async Task<Helpers.EnterpriseSettings> EnterpriseSettings(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<Helpers.EnterpriseSettings> EnterpriseSettingsAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
-            string jsonResponse = await JsonClient.GetEnterpriseSettings(cancellationToken);
+            string jsonResponse = await JsonClient.GetEnterpriseSettingsAsync(cancellationToken);
 
             var response = JsonConvert.DeserializeObject<Helpers.EnterpriseSettings>(jsonResponse);
 

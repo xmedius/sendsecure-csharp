@@ -108,11 +108,11 @@ namespace XMedius.SendSecure.Test
         }
 
         [TestMethod]
-        public async Task NewSafebox_Success()
+        public async Task NewSafeboxAsync_Success()
         {
             var jsonClient = new JsonClient("29401642-b24f-4986-af3d-67af2e3f893c", "testsuccess");
 
-            string json = await jsonClient.NewSafebox("testsuccess@xmedius.com");
+            string json = await jsonClient.NewSafeboxAsync("testsuccess@xmedius.com");
 
             Assert.AreEqual("{\"guid\":\"" + GUID + "\",\"public_encryption_key\":\"key\",\"upload_url\":\"" + UPLOAD_URL + "\"}"
                 , json);
@@ -120,13 +120,13 @@ namespace XMedius.SendSecure.Test
 
         [TestMethod]
         [ExpectedException(typeof(Exceptions.SendSecureException))]
-        public async Task NewSafebox_UrlError()
+        public async Task NewSafeboxAsync_UrlError()
         {
             var jsonClient = new JsonClient("29401642-b24f-4986-af3d-67af2e3f893c", "testnotfound");
 
             try
             {
-                string json = await jsonClient.NewSafebox("testsuccess@xmedius.com");
+                string json = await jsonClient.NewSafeboxAsync("testsuccess@xmedius.com");
             }
             catch (Exceptions.SendSecureException e)
             {
@@ -137,13 +137,13 @@ namespace XMedius.SendSecure.Test
 
         [TestMethod]
         [ExpectedException(typeof(Exceptions.SendSecureException))]
-        public async Task NewSafebox_NewSafeboxError()
+        public async Task NewSafeboxAsync_NewSafeboxError()
         {
             var jsonClient = new JsonClient("29401642-b24f-4986-af3d-67af2e3f893c", "testsuccess");
 
             try
             {
-                string json = await jsonClient.NewSafebox("testnotfound@xmedius.com");
+                string json = await jsonClient.NewSafeboxAsync("testnotfound@xmedius.com");
             }
             catch (Exceptions.SendSecureException e)
             {
@@ -153,26 +153,26 @@ namespace XMedius.SendSecure.Test
         }
 
         [TestMethod]
-        public async Task GetSecurityProfiles_Success()
+        public async Task GetSecurityProfilesAsync_Success()
         {
             Mock<HttpClientHandler> mockHandler = new Mock<HttpClientHandler>();
 
             var jsonClient = new JsonClient("29401642-b24f-4986-af3d-67af2e3f893c", "testsuccess");
 
-            string json = await jsonClient.GetSecurityProfiles("testsuccess@xmedius.com");
+            string json = await jsonClient.GetSecurityProfilesAsync("testsuccess@xmedius.com");
 
             Assert.AreEqual("{\"security_profiles\":[]}", json);
         }
 
         [TestMethod]
         [ExpectedException(typeof(Exceptions.SendSecureException))]
-        public async Task GetSecurityProfiles_UrlError()
+        public async Task GetSecurityProfilesAsync_UrlError()
         {
             var jsonClient = new JsonClient("29401642-b24f-4986-af3d-67af2e3f893c", "testnotfound");
 
             try
             {
-                string json = await jsonClient.GetSecurityProfiles("testsuccess@xmedius.com");
+                string json = await jsonClient.GetSecurityProfilesAsync("testsuccess@xmedius.com");
             }
             catch (Exceptions.SendSecureException e)
             {
@@ -183,13 +183,13 @@ namespace XMedius.SendSecure.Test
 
         [TestMethod]
         [ExpectedException(typeof(Exceptions.SendSecureException))]
-        public async Task GetSecurityProfiles_GetSecurityProfilesError()
+        public async Task GetSecurityProfilesAsync_GetSecurityProfilesError()
         {
             var jsonClient = new JsonClient("29401642-b24f-4986-af3d-67af2e3f893c", "testsuccess");
 
             try
             {
-                string json = await jsonClient.GetSecurityProfiles("testnotfound@xmedius.com");
+                string json = await jsonClient.GetSecurityProfilesAsync("testnotfound@xmedius.com");
             }
             catch (Exceptions.SendSecureException e)
             {
@@ -199,24 +199,24 @@ namespace XMedius.SendSecure.Test
         }
 
         [TestMethod]
-        public async Task GetEnterpriseSettings_Success()
+        public async Task GetEnterpriseSettingsAsync_Success()
         {
             var jsonClient = new JsonClient("29401642-b24f-4986-af3d-67af2e3f893c", "testsuccess");
 
-            string json = await jsonClient.GetEnterpriseSettings();
+            string json = await jsonClient.GetEnterpriseSettingsAsync();
 
             Assert.AreEqual("{\"extension_filter\":{\"mode\":\"allow\",\"list\":[]},\"created_at\":\"0001-01-01T00:00:00\",\"updated_at\":\"0001-01-01T00:00:00\",\"default_security_profile_id\":null,\"pdf_language\":\"en\",\"use_pdfa_audit_records\":false,\"international_dialing_plan\":\"us\",\"include_users_in_autocomplete\":true,\"include_favorites_in_autocomplete\":true}", json);
         }
 
         [TestMethod]
         [ExpectedException(typeof(Exceptions.SendSecureException))]
-        public async Task GetEnterpriseSettings_UrlError()
+        public async Task GetEnterpriseSettingsAsync_UrlError()
         {
             var jsonClient = new JsonClient("29401642-b24f-4986-af3d-67af2e3f893c", "testnotfound");
 
             try
             {
-                string json = await jsonClient.GetEnterpriseSettings();
+                string json = await jsonClient.GetEnterpriseSettingsAsync();
             }
             catch (Exceptions.SendSecureException e)
             {
@@ -227,13 +227,13 @@ namespace XMedius.SendSecure.Test
 
         [TestMethod]
         [ExpectedException(typeof(Exceptions.SendSecureException))]
-        public async Task GetEnterpriseSettings_GetEnterpriseSettingsError()
+        public async Task GetEnterpriseSettingsAsync_GetEnterpriseSettingsError()
         {
             var jsonClient = new JsonClient("29401642-b24f-4986-af3d-67af2e3f893c", "testurisuccess");
 
             try
             {
-                string json = await jsonClient.GetEnterpriseSettings();
+                string json = await jsonClient.GetEnterpriseSettingsAsync();
             }
             catch (Exceptions.SendSecureException e)
             {

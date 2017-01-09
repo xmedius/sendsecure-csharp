@@ -65,7 +65,7 @@ namespace SendSecureClient
         {
             try
             {
-                string token = GetUserToken().Result;
+                string token = GetUserTokenAsync().GetAwaiter().GetResult();
             }
             catch (XMedius.SendSecure.Exceptions.SendSecureException e)
             {
@@ -77,9 +77,9 @@ namespace SendSecureClient
             }
         }
 
-        public static async Task<string> GetUserToken()
+        public static async Task<string> GetUserTokenAsync()
         {
-            string token = await XMedius.SendSecure.Client.GetUserToken("deathstar", "darthvader", "d@Rk$1De", "DV-TIE/x1", "TIE Advanced x1", "The Force App", new Uri("https://portal.xmedius.com"));
+            string token = await XMedius.SendSecure.Client.GetUserTokenAsync("deathstar", "darthvader", "d@Rk$1De", "DV-TIE/x1", "TIE Advanced x1", "The Force App", new Uri("https://portal.xmedius.com"));
 
             Console.WriteLine(token);
             return token;
@@ -112,7 +112,7 @@ namespace SendSecureClient
             {
                 string token = "USER|1d495165-4953-4457-8b5b-4fcf801e621a";
 
-                string previewUrl = SubmitSafebox(token).GetAwaiter().GetResult();
+                string previewUrl = SubmitSafeboxAsync(token).GetAwaiter().GetResult();
             }
             catch (XMedius.SendSecure.Exceptions.SendSecureException e)
             {
@@ -124,7 +124,7 @@ namespace SendSecureClient
             }
         }
 
-        public static async Task<string> SubmitSafebox(string token)
+        public static async Task<string> SubmitSafeboxAsync(string token)
         {
             var safebox2 = new XMedius.SendSecure.Helpers.Safebox("darthvader@empire.com");
             safebox2.Subject = "Family matters";
@@ -138,7 +138,7 @@ namespace SendSecureClient
             safebox2.Recipients.Add(recipient);
 
             XMedius.SendSecure.Client client = new Client(token, "deathstar", new Uri("https://portal.xmedius.com"));
-            XMedius.SendSecure.Helpers.SafeboxResponse safeboxResponse = await client.SubmitSafebox(safebox2);
+            XMedius.SendSecure.Helpers.SafeboxResponse safeboxResponse = await client.SubmitSafeboxAsync(safebox2);
 
             Console.WriteLine(safeboxResponse.PreviewUrl);
             return safeboxResponse.PreviewUrl;
@@ -154,7 +154,7 @@ namespace SendSecureClient
 
 ### Get User Token
 ```
-GetUserToken(enterpriseAccount, username, password, deviceId, deviceName, applicationType, endpoint, oneTimePassword, cancellationToken)
+GetUserTokenAsync(enterpriseAccount, username, password, deviceId, deviceName, applicationType, endpoint, oneTimePassword, cancellationToken)
 ```
 Creates and returns an API Token for a specific user within a SendSecure enterprise account.
 Calling this method again with the exact same params will always return the same Token.
@@ -185,7 +185,7 @@ locale            | String | The locale in which the server errors will be retur
 
 ### Get Enterprise Settings
 ```
-EnterpriseSettings(cancellationToken)
+EnterpriseSettingsAsync(cancellationToken)
 ```
 Returns all values/properties of the enterprise account's settings specific to SendSecure.
 
@@ -195,7 +195,7 @@ cancellationToken | CancellationToken | A cancellation token that can be used by
 
 ### Get Default Security Profile
 ```
-DefaultSecurityProfile(userEmail, cancellationToken)
+DefaultSecurityProfileAsync(userEmail, cancellationToken)
 ```
 Returns the default security profile (if it has been set) for a specific user, with all its setting values/properties.
 
@@ -206,7 +206,7 @@ cancellationToken | CancellationToken | A cancellation token that can be used by
 
 ### Get Security Profiles
 ```
-SecurityProfiles(userEmail, cancellationToken)
+SecurityProfilesAsync(userEmail, cancellationToken)
 ```
 Returns the list of all security profiles available to a specific user, with all their setting values/properties.
 
@@ -217,7 +217,7 @@ cancellationToken | CancellationToken | A cancellation token that can be used by
 
 ### Initialize SafeBox
 ```
-InitializeSafebox(safebox, cancellationToken)
+InitializeSafeboxAsync(safebox, cancellationToken)
 ```
 Pre-creates a SafeBox on the SendSecure system and returns the updated Safebox object with the necessary system parameters filled out (GUID, public encryption key, upload URL).
 
@@ -228,7 +228,7 @@ cancellationToken | CancellationToken | A cancellation token that can be used by
 
 ### Upload Attachment
 ```
-UploadAttachment(safebox, attachment, cancellationToken)
+UploadAttachmentAsync(safebox, attachment, cancellationToken)
 ```
 Uploads the specified file as an Attachment of the specified SafeBox and returns the updated Attachment object with the GUID parameter filled out.
 
@@ -240,7 +240,7 @@ cancellationToken | CancellationToken | A cancellation token that can be used by
 
 ### Commit SafeBox
 ```
-CommitSafebox(safebox, cancellationToken)
+CommitSafeboxAsync(safebox, cancellationToken)
 ```
 Finalizes the creation (commit) of the SafeBox on the SendSecure system.
 This actually "Sends" the SafeBox with all content and contact info previously specified.
@@ -252,7 +252,7 @@ cancellationToken | CancellationToken | A cancellation token that can be used by
 
 ### Submit SafeBox
 ```
-SubmitSafebox(safebox, cancellationToken)
+SubmitSafeboxAsync(safebox, cancellationToken)
 ```
 This method is a high-level combo that initializes the SafeBox, uploads all attachments and commits the SafeBox.
 
