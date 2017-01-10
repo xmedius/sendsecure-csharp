@@ -280,6 +280,7 @@ Message              | The initial message of the SafeBox (optional if the SafeB
 Recipients           | The list of all [Recipient](#recipient) objects of the SafeBox (mandatory, at least one recipient).
 Attachments          | The list of all [Attachment](#attachment) objects of the SafeBox (optional if the SafeBox has a message).
 SecurityProfile      | The SecurityProfile object defining security options for the SafeBox (mandatory).
+
 <!-- NotificationLanguage | The language used for email notifications sent to the recipients (optional, English by default).
 MISSING -->
 
