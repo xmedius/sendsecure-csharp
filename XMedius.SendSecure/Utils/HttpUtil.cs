@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -49,7 +46,7 @@ namespace XMedius.SendSecure.Utils
                     }
                 }
             }
-            catch (System.Net.Http.HttpRequestException e)
+            catch (HttpRequestException e)
             {
                 if (e.InnerException != null)
                 {
@@ -66,17 +63,32 @@ namespace XMedius.SendSecure.Utils
             }
         }
 
-        public static async Task<string> MakeAuthenticatedGetRequestAsync(Uri requestUri, string token, CancellationToken cancellationToken)
+        public static HttpRequestMessage PrepareAuthenticatedRequest(Uri requestUri, string token)
+        {
+            HttpRequestMessage request = new HttpRequestMessage();
+            request.RequestUri = requestUri;
+            request.Headers.Add("XM-Token-Authorization", token);
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            return request;
+        }
+
+        private static async Task<string> MakeAuthenticatedRequestAsync(HttpMethod method, Uri requestUri, string token, StringContent content, CancellationToken cancellationToken)
         {
             try
             {
-                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, requestUri);
+                var request = new HttpRequestMessage
+                {
+                    RequestUri = requestUri,
+                    Method = method,
+                };
                 request.Headers.Add("XM-Token-Authorization", token);
                 request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                string responseString = await MakeRequestAsync(request, cancellationToken);
-
-                return responseString;
+                if (content != null)
+                {
+                    request.Content = content;
+                }
+                return await MakeRequestAsync(request, cancellationToken);
             }
             catch (Exceptions.MakeRequestException e)
             {
@@ -96,16 +108,40 @@ namespace XMedius.SendSecure.Utils
             }
             catch (TaskCanceledException)
             {
-                TraceSource.TraceEvent(TraceEventType.Information, 0, "GET request to {0} Cancelled.", requestUri);
+                TraceSource.TraceEvent(TraceEventType.Information, 0, "{0} request to {1} Cancelled.", method.ToString(), requestUri);
                 throw new OperationCanceledException();
             }
             catch (Exception e)
             {
                 TraceSource.TraceEvent(TraceEventType.Error, 0,
-                    "Unexpected exception in GET request to {0} ({1})", requestUri, e.Message);
+                    "Unexpected exception in {0}} request to {1} ({2})", method.ToString(), requestUri, e.Message);
                 throw new Exceptions.SendSecureException(e.Message);
             }
-
         }
+
+        public static async Task<string> MakeAuthenticatedGetRequestAsync(Uri requestUri, string token, CancellationToken cancellationToken)
+        {
+            return await MakeAuthenticatedRequestAsync(HttpMethod.Get, requestUri, token, null, cancellationToken);
+        }
+
+        public static async Task<string> MakeAuthenticatedPostRequestAsync(string jsonParameters, Uri requestUri, string token, CancellationToken cancellationToken)
+        {
+            StringContent jsonContent = new StringContent(jsonParameters);
+            jsonContent.Headers.ContentType = new MediaTypeWithQualityHeaderValue("application/json");
+            return await MakeAuthenticatedRequestAsync(HttpMethod.Post, requestUri, token, jsonContent, cancellationToken);
+        }
+
+        public static async Task<string> MakeAuthenticatedPatchRequestAsync(string jsonParameters, Uri requestUri, string token, CancellationToken cancellationToken)
+        {
+            StringContent jsonContent = new StringContent(jsonParameters);
+            jsonContent.Headers.ContentType = new MediaTypeWithQualityHeaderValue("application/json");
+            return await MakeAuthenticatedRequestAsync(new HttpMethod("PATCH"), requestUri, token, jsonContent, cancellationToken);
+        }
+
+        public static async Task<string> MakeAuthenticatedDeleteRequestAsync(Uri requestUri, string token, CancellationToken cancellationToken)
+        {
+            return await MakeAuthenticatedRequestAsync(HttpMethod.Delete, requestUri, token, null, cancellationToken);
+        }
+        
     }
 }

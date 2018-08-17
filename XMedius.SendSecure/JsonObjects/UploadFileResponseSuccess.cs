@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Newtonsoft.Json;
 
 namespace XMedius.SendSecure.JsonObjects
 {
+    internal class TemporaryDocument
+    {
+        [JsonProperty(PropertyName = "document_guid", Required = Required.Always)]
+        public string DocumentGuid { get; set; }
+    }
+
     internal class UploadFileResponseSuccess
     {
-        internal class TemporaryDocument
-        {
-            public string document_guid { get; set; }
-        }
-
-        public TemporaryDocument temporary_document { get; set; }
+        [JsonProperty(PropertyName = "temporary_document", Required = Required.Always)]
+        public TemporaryDocument TemporaryDocument { get; set; }
     }
 }

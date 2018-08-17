@@ -30,9 +30,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -47,33 +46,58 @@
   <ItemGroup>
     <Compile Include="Client.cs" />
     <Compile Include="Helpers\Attachment.cs" />
+    <Compile Include="Helpers\ContactInteraction.cs" />
+    <Compile Include="Helpers\ConsentMessage.cs" />
+    <Compile Include="Helpers\ConsentMessageGroup.cs" />
     <Compile Include="Helpers\ContactMethod.cs" />
+    <Compile Include="Helpers\DownloadActivity.cs" />
+    <Compile Include="Helpers\DownloadActivityDetail.cs" />
+    <Compile Include="Helpers\DownloadActivityDocument.cs" />
     <Compile Include="Helpers\EnterpriseSettings.cs" />
     <Compile Include="Exceptions\MakeRequestException.cs" />
     <Compile Include="Exceptions\SendSecureException.cs" />
     <Compile Include="Exceptions\UnexpectedServerResponseException.cs" />
+    <Compile Include="Helpers\EventHistory.cs" />
     <Compile Include="Helpers\ExtensionFilter.cs" />
-    <Compile Include="Helpers\Recipient.cs" />
+    <Compile Include="Helpers\Favorite.cs" />
+    <Compile Include="Helpers\GuestOptions.cs" />
+    <Compile Include="Helpers\Message.cs" />
+    <Compile Include="Helpers\MessageDocument.cs" />
+    <Compile Include="Helpers\Metadata.cs" />
+    <Compile Include="Helpers\Participant.cs" />
+    <Compile Include="Helpers\PersonnalSecureLink.cs" />
+    <Compile Include="Helpers\Reply.cs" />
     <Compile Include="Helpers\Safebox.cs" />
-    <Compile Include="Helpers\SafeboxResponse.cs" />
+    <Compile Include="Helpers\SecurityEnums.cs" />
+    <Compile Include="Helpers\SecurityOptions.cs" />
     <Compile Include="Helpers\SecurityProfile.cs" />
+    <Compile Include="Helpers\UserSettings.cs" />
     <Compile Include="JsonClient.cs" />
-    <Compile Include="JsonObjects\CommitSafeboxRequest.cs" />
-    <Compile Include="JsonObjects\GetSecurityProfilesResponseSuccess.cs" />
+    <Compile Include="JsonObjects\AddTimeResponseSuccess.cs" />
+    <Compile Include="JsonObjects\CommitSafeboxResponseSuccess.cs" />
+    <Compile Include="JsonObjects\GetFavoritesResponseSuccess.cs" />
     <Compile Include="JsonObjects\GetTokenRequest.cs" />
     <Compile Include="JsonObjects\GetTokenResponseError.cs" />
-    <Compile Include="JsonObjects\GetTokenResponseSuccess.cs" />
-    <Compile Include="JsonObjects\NewSafeboxResponseSuccess.cs" />
+    <Compile Include="JsonObjects\NewFileResponseSuccess.cs" />
+    <Compile Include="JsonObjects\RequestResponse.cs" />
+    <Compile Include="JsonObjects\SafeboxesResponse.cs" />
+    <Compile Include="JsonObjects\SearchRecipientResponseSuccess.cs" />
+    <Compile Include="JsonObjects\SecurityProfilesResponseSuccess.cs" />
+    <Compile Include="JsonObjects\Serializers\ParticipantSerializer.cs" />
+    <Compile Include="JsonObjects\Serializers\SafeboxSerializer.cs" />
     <Compile Include="JsonObjects\UploadFileResponseSuccess.cs" />
+    <Compile Include="JsonObjects\UserToken.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\ExtensionsUtils.cs" />
     <Compile Include="Utils\HttpUtil.cs" />
     <Compile Include="Utils\SendSecureUrlUtil.cs" />
+    <Compile Include="Constants\Path.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>

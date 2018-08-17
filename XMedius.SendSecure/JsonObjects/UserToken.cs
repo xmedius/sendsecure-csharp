@@ -1,16 +1,12 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace XMedius.SendSecure.JsonObjects
 {
-    class GetTokenResponseSuccess
+    public class UserToken
     {
         public bool Result { get; set; }
-
+        [JsonProperty(PropertyName = "user_id")]
+        public int? UserId { get; set; }
         [JsonProperty(Required = Required.Always)]
         public string Token { get; set; }
     }

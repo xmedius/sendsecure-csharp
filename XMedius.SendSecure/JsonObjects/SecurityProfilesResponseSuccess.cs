@@ -1,15 +1,11 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace XMedius.SendSecure.JsonObjects
 {
-    internal class GetSecurityProfilesResponseSuccess
+    internal class SecurityProfilesResponseSuccess
     {
         [JsonProperty(PropertyName = "security_profiles", Required = Required.AllowNull)]
-        public List<Helpers.SecurityProfile> SecurityProfiles;
+        public List<Helpers.SecurityProfile> SecurityProfiles { get; set; }
     }
 }
