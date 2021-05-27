@@ -77,7 +77,7 @@ namespace XMedius.SendSecure.Helpers
         [JsonProperty(PropertyName = "distribute_key")]
         public ValueT<bool?> DistributeKey { get; set; }
         [JsonProperty(PropertyName = "consent_group_id")]
-        public ValueT<int> ConsentGroupId { get; set; }
+        public ValueT<int?> ConsentGroupId { get; set; }
 
 
         public static SecurityProfile FromJson(string json)
