@@ -247,9 +247,9 @@ namespace XMedius.SendSecure.Helpers
         }
 
         [JsonIgnore]
-        public int ConsentGroupId { get; set; }
+        public int? ConsentGroupId { get; set; }
         [JsonProperty("consent_group_id")]
-        private int ConsentGroupIdAlternateSetter
+        private int? ConsentGroupIdAlternateSetter
         {
             set { SecurityOptions.ConsentGroupId = value; }
         }
